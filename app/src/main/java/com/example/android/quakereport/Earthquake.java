@@ -10,9 +10,9 @@ public class Earthquake {
     //city of earthquake
     private String mCity;
     //date when earthquake originated
-    private String mDate;
+    private long mDate;
 
-    public Earthquake(double magnitude, String city, String date) {
+    public Earthquake(double magnitude, String city, long date) {
         mMagnitude = magnitude;
         mCity= city;
         mDate = date;
@@ -26,7 +26,7 @@ public class Earthquake {
         return mCity;
     }
 
-    public String getDate() {
+    public long getDate() {
         return mDate;
     }
 }

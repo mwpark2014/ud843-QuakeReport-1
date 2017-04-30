@@ -6,9 +6,13 @@
 
     <TextView
         android:id="@+id/magText"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="0.9"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:background="@drawable/magnitude_circle"
+        android:fontFamily="sans-serif-medium"
         />
 
     <TextView
@@ -16,6 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="1"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         />
 
     <TextView
@@ -23,5 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="1"
+        android:textAlignment="gravity"
+        android:gravity="end"
         />
 </LinearLayout>
