@@ -52,7 +52,8 @@ public final class QueryUtils {
             for(int i = 0; i < features.length(); i++) {
                 JSONObject properties = features.getJSONObject(i).optJSONObject("properties");
                 earthquakes.add(new Earthquake(properties.optDouble("mag"),
-                        properties.optString("place"), properties.optLong("time")));
+                        properties.optString("place"), properties.optLong("time"),
+                        properties.optString("url")));
             }
 
         } catch (JSONException e) {

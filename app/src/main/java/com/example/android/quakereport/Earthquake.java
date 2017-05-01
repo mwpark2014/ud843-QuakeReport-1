@@ -11,11 +11,14 @@ public class Earthquake {
     private String mCity;
     //date when earthquake originated
     private long mDate;
+    //URL for more info for earthquake
+    private String mURL;
 
-    public Earthquake(double magnitude, String city, long date) {
+    public Earthquake(double magnitude, String city, long date, String url) {
         mMagnitude = magnitude;
         mCity= city;
         mDate = date;
+        mURL = url;
     }
 
     public double getMagnitude() {
@@ -29,4 +32,8 @@ public class Earthquake {
     public long getDate() {
         return mDate;
     }
+    public String getURL() {
+        return mURL;
+    }
+
 }

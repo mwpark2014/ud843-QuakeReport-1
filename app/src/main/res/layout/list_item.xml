@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    android:paddingEnd="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingStart="16dp">
 
     <TextView
         android:id="@+id/magText"
@@ -13,6 +17,7 @@
         android:textColor="@android:color/white"
         android:background="@drawable/magnitude_circle"
         android:fontFamily="sans-serif-medium"
+        android:textSize="16sp"
         />
 
     <TextView
@@ -22,6 +27,9 @@
         android:layout_weight="1"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:textAllCaps="true"
+        android:textColor="@color/textColorEarthquakeLocation"
+        android:textSize="12sp"
         />
 
     <TextView
@@ -31,5 +39,7 @@
         android:layout_weight="1"
         android:textAlignment="gravity"
         android:gravity="end"
+        android:textColor="@color/textColorEarthquakeDetails"
+        android:textSize="12sp"
         />
 </LinearLayout>

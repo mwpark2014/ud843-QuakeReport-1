@@ -1,8 +1,9 @@
 package com.example.android.quakereport;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 
 public class EarthquakeAdapter extends ArrayAdapter {
+    private Earthquake eq;
 
     public EarthquakeAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List objects) {
         super(context, resource, objects);
@@ -40,7 +42,14 @@ public class EarthquakeAdapter extends ArrayAdapter {
         if (rootView == null) {
             rootView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
-        Earthquake eq = (Earthquake)getItem(position);
+
+        //Set the OnClickListener to direct user to website for more details
+        eq = (Earthquake)getItem(position);
+        rootView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                openEarthquakePage();
+            }
+        });
 
         String magnitudeOutput = new DecimalFormat("0.0").format(eq.getMagnitude());
         TextView magnitudeView = (TextView)rootView.findViewById(R.id.magText);
@@ -74,6 +83,12 @@ public class EarthquakeAdapter extends ArrayAdapter {
                 R.color.magnitude6, R.color.magnitude7, R.color.magnitude8,
                 R.color.magnitude9, R.color.magnitude10plus, R.color.magnitude10plus};
         return ContextCompat.getColor(getContext(), magColorGradient[(int)magnitude]);
+    }
+
+    private void openEarthquakePage() {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(eq.getURL()));
+        getContext().startActivity(i);
     }
 }
 
