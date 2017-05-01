@@ -43,13 +43,7 @@ public class EarthquakeAdapter extends ArrayAdapter {
             rootView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
-        //Set the OnClickListener to direct user to website for more details
         eq = (Earthquake)getItem(position);
-        rootView.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                openEarthquakePage();
-            }
-        });
 
         String magnitudeOutput = new DecimalFormat("0.0").format(eq.getMagnitude());
         TextView magnitudeView = (TextView)rootView.findViewById(R.id.magText);
@@ -85,10 +79,5 @@ public class EarthquakeAdapter extends ArrayAdapter {
         return ContextCompat.getColor(getContext(), magColorGradient[(int)magnitude]);
     }
 
-    private void openEarthquakePage() {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(eq.getURL()));
-        getContext().startActivity(i);
-    }
 }
 
