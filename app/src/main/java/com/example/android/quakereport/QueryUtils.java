@@ -1,13 +1,31 @@
 package com.example.android.quakereport;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
+import java.security.cert.Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLPeerUnverifiedException;
+
+import static com.example.android.quakereport.EarthquakeActivity.LOG_TAG;
 
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
@@ -34,11 +52,26 @@ public final class QueryUtils {
     private QueryUtils() {
     }
 
+    public static String fetchEarthquakeData(String url) {
+        URL urlConnection = createUrl(url);
+        String jsonResponse = "";
+
+        try {
+            jsonResponse = makeHttpRequest(urlConnection);
+        }
+        catch (IOException e) {
+            Log.e(LOG_TAG, "fetchEarthquakeData: ", e);
+        }
+
+        return jsonResponse;
+    }
+
     /**
      * Return a list of {@link Earthquake} objects that has been built up from
      * parsing a JSON response.
      */
     public static ArrayList<Earthquake> extractEarthquakes() {
+
 
         // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<Earthquake> earthquakes = new ArrayList<>();
@@ -67,14 +100,72 @@ public final class QueryUtils {
         return earthquakes;
     }
 
-    public String makeHttpRequest(String url) {
+    private static String makeHttpRequest(URL url) throws IOException {
+        String jsonResponse = "";
 
+        if(url == null)
+            return jsonResponse;
 
-        return "";
+        InputStream in = null;
+        HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+
+        try {
+            urlConnection.setReadTimeout(10000 /* milliseconds */);
+            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+
+            if (urlConnection.getResponseCode() == urlConnection.HTTP_OK) {
+                in = urlConnection.getInputStream();
+                jsonResponse = streamReader(in);
+            } else {
+                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
+            }
+        }
+        catch (IOException e) {
+            Log.e(LOG_TAG, "makeHttpRequest: ", e);
+        }
+        finally {
+            if(urlConnection != null)
+            urlConnection.disconnect();
+
+            if(in != null)
+            in.close();
+        }
+        return jsonResponse;
     }
 
-    public String streamReader() {
-        return "";
+    private static String streamReader(InputStream input) {
+        StringBuilder output = new StringBuilder();
+        String nextLine;
+        try {
+            if(input != null) {
+                BufferedReader reader = new BufferedReader
+                        (new InputStreamReader(input, Charset.forName("UTF-8")));
+                while((nextLine = reader.readLine()) != null)
+                    output.append(nextLine);
+                reader.close();
+            }
+        }
+        catch (IOException e) {
+            Log.e(LOG_TAG, "streamReader: ", e);
+        }
+
+        return output.toString();
+    }
+
+    /**
+     * Returns new URL object from the given string URL.
+     */
+    @Nullable
+    private static URL createUrl(String stringUrl) {
+        URL url = null;
+        try {
+            url = new URL(stringUrl);
+        } catch (MalformedURLException e) {
+            Log.e(LOG_TAG, "Error with creating URL ", e);
+        }
+        return url;
     }
 
 }

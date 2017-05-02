@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class EarthquakeActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     private static final String USGS_URL =
-            "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +47,21 @@ public class EarthquakeActivity extends AppCompatActivity {
     private class EarthquakeAsyncTask extends android.os.AsyncTask<String, Void, List<Earthquake>> {
         @Override
         protected List<Earthquake> doInBackground(String... urls) {
+            if(urls == null || urls[0] == null)
+                return null;
+
             ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
-            return earthquakes;
+            return null;
         }
 
         @Override
         protected void onPostExecute(List<Earthquake> earthquakes) {
+            if(earthquakes == null)
+                return;
+
+            Toast toast = Toast.makeText(getApplicationContext(), QueryUtils.fetchEarthquakeData(USGS_URL), Toast.LENGTH_LONG);
+            toast.show();
+
             // Find a reference to the {@link ListView} in the layout
             ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
