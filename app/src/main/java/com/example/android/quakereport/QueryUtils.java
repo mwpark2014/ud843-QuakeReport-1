@@ -67,4 +67,14 @@ public final class QueryUtils {
         return earthquakes;
     }
 
+    public String makeHttpRequest(String url) {
+
+
+        return "";
+    }
+
+    public String streamReader() {
+        return "";
+    }
+
 }
