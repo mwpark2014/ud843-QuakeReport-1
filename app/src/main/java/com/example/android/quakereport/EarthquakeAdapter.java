@@ -28,8 +28,8 @@ import java.util.List;
 public class EarthquakeAdapter extends ArrayAdapter {
     private Earthquake eq;
 
-    public EarthquakeAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List objects) {
-        super(context, resource, objects);
+    public EarthquakeAdapter(Context context, List<Earthquake> earthquakes) {
+        super(context, 0, earthquakes);
     }
 
     @NonNull
