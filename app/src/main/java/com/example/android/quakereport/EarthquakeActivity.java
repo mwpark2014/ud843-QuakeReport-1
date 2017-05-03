@@ -26,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,8 @@ public class EarthquakeActivity extends AppCompatActivity
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=5&limit=10";
     /** Adapter for the list of earthquakes */
     private EarthquakeAdapter mAdapter;
+    /** TextView that is displayed when the list is empty */
+    private TextView mEmptyStateTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class EarthquakeActivity extends AppCompatActivity
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        mEmptyStateTextView = (TextView)findViewById(R.id.emptyView);
+        earthquakeListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new {@link ArrayAdapter} of earthquakes
         mAdapter = new EarthquakeAdapter(this, new ArrayList<Earthquake>());
@@ -100,6 +105,8 @@ public class EarthquakeActivity extends AppCompatActivity
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
         }
+
+        mEmptyStateTextView.setText(R.string.empty);
     }
 
     @Override
